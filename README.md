@@ -21,10 +21,11 @@ Follow these steps to set up the environment and database properties before laun
 This file sets the `CATALINA_OPTS` required for the Parasoft virtualize server connection.
 
 ```
+mkdir -p ~/parabank-virtual-assets/
 cat <<EOF > ~/parabank-virtual-assets/my-env.txt
-CATALINA_OPTS=-Dparasoft.virtualize.server.url=[http://host.docker.internal:9080](http://host.docker.internal:9080) -Dparasoft.virtualize.group.id=parabank -Dparasoft.virtualize.driver.register.jdbcproxydriver.in.drivermanager=true -Dparasoft.virtualize.driver.proxy.direct=true
+CATALINA_OPTS=-Dparasoft.virtualize.server.url=http://host.docker.internal:9080 -Dparasoft.virtualize.group.id=parabank -Dparasoft.virtualize.driver.register.jdbcproxydriver.in.drivermanager=true -Dparasoft.virtualize.driver.proxy.direct=true
 EOF
-```
+``` 
 
 ### 2. Create JDBC Properties File
 This file configures the connection parameters for the HSQL database.
@@ -45,6 +46,7 @@ To start the ParaBank container with your custom configuration, run:
 docker run -d \
   --name parabank \
   -p 8080:8080 \
+  -p 9001:9001 \
   --env-file ~/parabank-virtual-assets/my-env.txt \
   -v $(pwd)/jdbc.properties:/WEB-INF/classes/jdbc.properties \
   parasoft/parabank
@@ -52,10 +54,10 @@ docker run -d \
 
 To check the container logs :
 
-```docker logs -f parabank_virt```
+```docker logs -f <<Your docker container name>>```
 
 ### 4. Accessing the Application
-- **Web** : http://localhost:8080/parabank/login.htm
+- **Web** : http://localhost:8080/parabank/index.htm
 - **API** : http://localhost:8080/parabank/api-docs/index.html
 - **DB** : jdbc -- url ```jdbc:hsqldb:hsql://localhost:9001/parabank``` -- username ```sa``` -- password ```leave it blank```
 
