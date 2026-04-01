@@ -15,41 +15,19 @@ This guide provides the necessary steps to configure and run the **Parasoft Para
 
 ## ⚙️ Configuration
 
-Follow these steps to set up the environment and database properties before launching the container.
+The necessary configuration files for environment variables (`parabank.env`) and database properties (`jdbc.properties`) are already included in the `docker/config/` directory. No manual setup is required.
 
-### 1. Create Environment File
-This file sets the `CATALINA_OPTS` required for the Parasoft virtualize server connection.
+### 🚀 Running the Application
+To start the ParaBank container along with the test suite, simply run:
 
-```
-mkdir -p ~/parabank-virtual-assets/
-cat <<EOF > ~/parabank-virtual-assets/my-env.txt
-CATALINA_OPTS=-Dparasoft.virtualize.server.url=http://host.docker.internal:9080 -Dparasoft.virtualize.group.id=parabank -Dparasoft.virtualize.driver.register.jdbcproxydriver.in.drivermanager=true -Dparasoft.virtualize.driver.proxy.direct=true
-EOF
-``` 
-
-### 2. Create JDBC Properties File
-This file configures the connection parameters for the HSQL database.
-
-```
-cat <<EOF > jdbc.properties
-jdbc.driverClassName=com.parasoft.xtest.jdbc.virt.driver.JDBCProxyDriver
-jdbc.url=jdbc:parasoft:proxydriver:org.hsqldb.jdbcDriver:@jdbc:hsqldb:hsql://localhost/parabank
-jdbc.username=sa
-jdbc.password=
-EOF
+```bash
+docker compose up
 ```
 
-### 3. 🚀 Running the Application
-To start the ParaBank container with your custom configuration, run:
+Alternatively, if you want to start only the ParaBank application:
 
-```
-docker run -d \
-  --name parabank \
-  -p 8080:8080 \
-  -p 9001:9001 \
-  --env-file ~/parabank-virtual-assets/my-env.txt \
-  -v $(pwd)/jdbc.properties:/WEB-INF/classes/jdbc.properties \
-  parasoft/parabank
+```bash
+docker compose up parabank
 ```
 
 To check the container logs :

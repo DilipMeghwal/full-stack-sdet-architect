@@ -1,6 +1,5 @@
-import { test, expect } from '../../fixtures/base.fixture';
-import { users } from '../../utils/test-data';
-import { LoginPage } from '../../pages/login.page';
+import { test, expect } from '../../../fixtures/base.fixture';
+import { LoginPage } from '../../../pages/login.page';
 
 test.describe('Login Tests', () => {
 

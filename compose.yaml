@@ -10,9 +10,9 @@ services:
       - "8080:8080"
       - "9001:9001"
     env_file:
-      - ~/parabank-virtual-assets/my-env.txt
+      - ./docker/config/parabank.env
     volumes:
-      - ./jdbc.properties:/WEB-INF/classes/jdbc.properties
+      - ./docker/config/jdbc.properties:/WEB-INF/classes/jdbc.properties
 
   tests:
     build: .
