@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2]
+        project: [api, ui]
+        shard: [1] # You can increase this if you have many tests in a project
 
     services:
       parabank:
@@ -46,13 +47,13 @@ jobs:
           WEB_URL: http://localhost:8080/parabank/
           API_BASE_URL: http://localhost:8080/parabank/services/bank/
           ENV: ci
-        run: npx playwright test --shard=${{ matrix.shard }}/2
+        run: npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
       # Upload results (IMPORTANT)
       - uses: actions/upload-artifact@v6
         if: always()
         with:
-          name: allure-results-${{ matrix.shard }}
+          name: allure-results-${{ matrix.project }}-${{ matrix.shard }}
           path: allure-results
   
   merge-reports:
