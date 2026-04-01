@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { miscOperations } from "@config/api-endpoints/misc-ops";
-import { validateSchema } from '../utils/schema-validator';
+import { validateSchema } from '../../utils/schema-validator';
 import { users } from 'utils/test-data';
 
 test('should validate customer schema', async ({ request }, testInfo) => {
