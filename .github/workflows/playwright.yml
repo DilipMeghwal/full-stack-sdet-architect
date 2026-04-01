@@ -21,7 +21,7 @@ jobs:
           - 8080:8080
           - 9001:9001
         options: >-
-          --health-cmd="curl -f http://parabank:8080/parabank/index.htm || exit 1"
+          --health-cmd="curl -f http://localhost:8080/parabank/index.htm || exit 1"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -42,7 +42,9 @@ jobs:
 
       - name: Run tests
         env:
-          BASE_URL: http://parabank:8080/parabank
+          WEB_URL: http://localhost:8080/parabank/
+          API_BASE_URL: http://localhost:8080/parabank/services/bank/
+          ENV: ci
         run: npx playwright test --shard=${{ matrix.shard }}/2
 
       # Upload results (IMPORTANT)
