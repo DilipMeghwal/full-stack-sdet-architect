@@ -1,7 +1,18 @@
 import { test, expect } from '../../../fixtures/base.fixture';
 import { LoginPage } from '../../../pages/login.page';
+import { request } from '@playwright/test';
 
 test.describe('Login Tests', () => {
+
+  test.beforeAll(async ({ playwright }) => {
+    // Initialize database to ensure john/demo exists
+    const requestContext = await playwright.request.newContext({
+        baseURL: process.env.API_BASE_URL || 'http://localhost:8080/parabank/services/bank/'
+    });
+    const response = await requestContext.post('initializeDB');
+    expect(response.status(), 'Failed to initialize database').toBe(200);
+    await requestContext.dispose();
+  });
 
   test.beforeEach(async ({ loginPage }) => {
     await loginPage.goto('index.htm');
