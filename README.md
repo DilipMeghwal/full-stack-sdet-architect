@@ -61,6 +61,9 @@ To check the container logs :
 - **API** : http://localhost:8080/parabank/api-docs/index.html
 - **DB** : jdbc -- url ```jdbc:hsqldb:hsql://localhost:9001/parabank``` -- username ```sa``` -- password ```leave it blank```
 
+### note - Run below command directly to run using docker compose file
+```docker compose up```
+
 *---- below code yet to be formatted ---*
 
 run this to fetch the swagger yaml : npm run sync-api

@@ -1,0 +1,30 @@
+services:
+  parabank:
+    image: parasoft/parabank
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/parabank/index.htm"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    ports:
+      - "8080:8080"
+      - "9001:9001"
+    env_file:
+      - ~/parabank-virtual-assets/my-env.txt
+    volumes:
+      - ./jdbc.properties:/WEB-INF/classes/jdbc.properties
+
+  tests:
+    build: .
+    depends_on:
+      parabank:
+        condition: service_healthy
+    environment:
+      - BASE_URL=http://parabank:8080/parabank
+    command: >
+      sh -c "
+        npx wait-on http://parabank:8080/parabank &&
+        npx playwright test
+      "
+    deploy:
+      replicas: 2

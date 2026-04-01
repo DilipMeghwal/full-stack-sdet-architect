@@ -1,9 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { miscOperations } from "@config/api-endpoints/misc-ops";
 import { validateSchema } from '../utils/schema-validator';
+import { users } from 'utils/test-data';
 
-test('should load the home page', async ({ request }) => {
-  const response = await request.get(process.env.API_BASE_URL + miscOperations.login(process.env.USERNAME, process.env.PASSWORD),
+test('should load the home page', async ({ request }, testInfo) => {
+  testInfo.annotations.push({ type: 'epic', description: 'Parabank' });
+  testInfo.annotations.push({ type: 'feature', description: 'Authentication' });
+  const response = await request.get(process.env.API_BASE_URL + miscOperations.login(users.valid.username, users.valid.password),
     {
       headers: {
         accept: "application/json"

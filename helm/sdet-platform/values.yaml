@@ -1,0 +1,22 @@
+replicaCount: 1
+
+parabank:
+  image: parasoft/parabank
+  port: 8080
+  imagePullPolicy: IfNotPresent
+
+tests:
+  image: playwright-tests
+  shards: 3
+  baseUrl: http://parabank:8080
+  imagePullPolicy: Never
+
+allure:
+  image: frankescobar/allure-docker-service
+  port: 5050
+  nodePort: 30007
+  imagePullPolicy: IfNotPresent
+
+pvc:
+  size: 1Gi
+  accessMode: ReadWriteOnce   # 🔥 important for local

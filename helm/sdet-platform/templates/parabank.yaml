@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parabank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: parabank
+  template:
+    metadata:
+      labels:
+        app: parabank
+    spec:
+      containers:
+        - name: parabank
+          image: {{ .Values.parabank.image }}
+          ports:
+            - containerPort: {{ .Values.parabank.port }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: parabank
+spec:
+  selector:
+    app: parabank
+  ports:
+    - port: {{ .Values.parabank.port }}
+      targetPort: {{ .Values.parabank.port }}

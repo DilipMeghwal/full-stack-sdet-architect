@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: playwright-tests
+spec:
+  completions: {{ .Values.tests.shards }}
+  parallelism: {{ .Values.tests.shards }}
+  template:
+    metadata:
+      labels:
+        app: tests
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: tests
+          image: {{ .Values.tests.image }}
+          imagePullPolicy: Never
+          command: ["npx", "playwright", "test"]
+          env:
+            - name: BASE_URL
+              value: {{ .Values.tests.baseUrl }}
+          volumeMounts:
+            - name: allure-volume
+              mountPath: /app/allure-results
+      volumes:
+        - name: allure-volume
+          persistentVolumeClaim:
+            claimName: allure-results-pvc

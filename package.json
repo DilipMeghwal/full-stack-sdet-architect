@@ -4,8 +4,12 @@
   "description": "This framework covers all the aspects of QA testing based on nodejs tech.",
   "main": "index.js",
   "scripts": {
-    "sync-api": "node --experimental-strip-types sync-swagger.ts",
-    "prepare": "npm run sync-api"
+    "sync-api": "tsx sync-swagger.ts",
+    "prepare": "npm run sync-api",
+    "pw-run:ui": "npx wait-on http://parabank:8080/parabank && npx playwright test --project=ui --shard=1/2",
+    "pw-run:api": "npx wait-on http://parabank:8080/parabank && npx playwright test --project=api --shard=2/2",
+    "report": "docker run -it --rm -v $(pwd)/allure-results:/app/allure-results -v $(pwd)/allure-report:/app/allure-report frankescobar/allure-docker-service allure generate /app/allure-results -o /app/allure-report --clean",
+    "report:open": "docker stop $(docker ps -q --filter ancestor=frankescobar/allure-docker-service) 2>/dev/null || true && docker run -it --rm -p 5051:5050 -v $(pwd)/allure-results:/app/allure-results frankescobar/allure-docker-service"
   },
   "repository": {
     "type": "git",
@@ -23,13 +27,16 @@
     "@playwright/test": "^1.58.2",
     "@types/js-yaml": "^4.0.9",
     "@types/k6": "^1.6.0",
-    "@types/node": "^25.5.0"
+    "@types/node": "^25.5.0",
+    "allure-commandline": "^2.38.1",
+    "allure-playwright": "^3.6.0"
   },
   "dependencies": {
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "dotenv": "^17.3.1",
     "js-yaml": "^4.1.1",
-    "mysql2": "^3.20.0"
+    "mysql2": "^3.20.0",
+    "wait-on": "^9.0.4"
   }
 }
