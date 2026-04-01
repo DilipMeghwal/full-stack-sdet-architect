@@ -50,10 +50,12 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      testDir: './tests/api',
       name: 'api',
       use: { ...devices['Desktop Chrome'], baseURL: process.env.API_BASE_URL || 'http://parabank:8080/parabank' },
     },
     {
+      testDir: './tests/ui',
       name: 'ui',
       use: { ...devices['Desktop Chrome'], baseURL: process.env.WEB_URL || 'http://parabank:8080/parabank' },
     },
